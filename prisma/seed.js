@@ -80,7 +80,7 @@ const booking = [
     extraBed: 0,
     startDate: "2023-10-12T00:00:00Z",
     endDate: "2023-10-13T00:00:00Z",
-    totalPrice: "6000",
+    totalPrice: 6000,
   },
   {
     userId: 3,
@@ -88,7 +88,7 @@ const booking = [
     extraBed: 0,
     startDate: "2023-10-01T00:00:00Z",
     endDate: "2023-10-02T00:00:00Z",
-    totalPrice: "11000",
+    totalPrice: 11000,
   },
   {
     userId: 4,
@@ -96,7 +96,7 @@ const booking = [
     extraBed: 0,
     startDate: "2023-10-12T00:00:00Z",
     endDate: "2023-10-13T00:00:00Z",
-    totalPrice: "13000",
+    totalPrice: 13000,
   },
 ];
 

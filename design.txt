@@ -188,8 +188,18 @@ RESPONSE
 
 USER
 
-GET USER PROFILE BY id
-GET /user/:userId
+GET ALL ROOM CAN BOOKING
+GET /user/room
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { 
+  room:
+}
+401 { message: String }
+500 { message: String }
+
+GET USER PROFILE BY id BOOKING
+GET /user/booking
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 RESPONSE
 200 { 
@@ -199,17 +209,18 @@ RESPONSE
 401 { message: String }
 500 { message: String }
 
-GET ALL ROOM CAN BOOKING
+CREATE BOOKING
+POST /user/booking
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY message?, image?
 RESPONSE
-200 { 
-  room:
-}
+201 { message: String }
+400 { message: String }
 401 { message: String }
 500 { message: String }
 
-CREATE BOOKING
-POST /post
+UPDATE BOOKING
+PATCH /user/booking/:bookingId
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 BODY message?, image?
 RESPONSE
@@ -219,7 +230,7 @@ RESPONSE
 500 { message: String }
 
 CANCEL BOOKING
-DELETE /friend/:receiverId/cancel
+DELETE /user/booking/:bookingId
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 RESPONSE
 200 { message: String }
@@ -227,28 +238,3 @@ RESPONSE
 401 { message: String }
 500 { message: String }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-OPTIONAL
-GET ALL BOOKING
-GET /post/friend
-HEADER AUTHORIZATION Bearer ACCESS_TOKEN
-RESPONSE 
-201 { 
-  posts: [{id: Number, message: String, image: string, ...}],
-  user: { id: Number, firstName: String, ... }, 
-  }
-400 { message: String }
-401 { message: String }
-500 { message: String }

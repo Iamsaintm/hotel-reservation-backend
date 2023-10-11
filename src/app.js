@@ -9,6 +9,8 @@ const rateLimitMiddleware = require("./middlewares/rate-limit");
 const authRoute = require("./routes/auth-route");
 const adminRoomRoute = require("./routes/admin/room-route");
 const adminBookingRoute = require("./routes/admin/booking-route");
+const userBookingRoute = require("./routes/user/booking-route");
+const userRoomRoute = require("./routes/user/room-route");
 
 const app = express();
 
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use("/auth", authRoute);
 app.use("/admin/room", adminRoomRoute);
 app.use("/admin/booking", adminBookingRoute);
+app.use("/user/booking", userBookingRoute);
+app.use("/user/room", userRoomRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

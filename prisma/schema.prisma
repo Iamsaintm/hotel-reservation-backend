@@ -60,7 +60,7 @@ model Booking {
   endDate       DateTime @db.Date
   roomAvailable availble @default(OCCUPIED)
   userId        Int
-  totalPrice    String
+  totalPrice    Int
   usersId       User     @relation(fields: [userId], references: [id])
   roomId        Int
   roomsId       Room     @relation(fields: [roomId], references: [id])
