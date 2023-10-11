@@ -17,6 +17,12 @@ enum availble {
   OCCUPIED
 }
 
+enum payment {
+  ACCEPT
+  REJECT
+  PENDING
+}
+
 model User {
   id          Int       @id @default(autoincrement())
   password    String
@@ -29,17 +35,16 @@ model User {
 }
 
 model RoomType {
-  id        Int    @id @default(autoincrement())
-  roomType  String
-  adult     Int
-  kid       Int
-  roomPrice Int
-  rooms     Room[]
+  id         Int    @id @default(autoincrement())
+  roomType   String
+  guestLimit String
+  roomPrice  String
+  rooms      Room[]
 }
 
 model Room {
   id            Int       @id @default(autoincrement())
-  roomNumber    Int
+  roomNumber    String
   isMaintenance Boolean   @default(false)
   roomTypeId    Int
   roomType      RoomType  @relation(fields: [roomTypeId], references: [id])
@@ -47,16 +52,16 @@ model Room {
 }
 
 model Booking {
-  id           Int      @id @default(autoincrement())
-  extraBed     Int?
-  createdAt    DateTime @default(now())
-  isPayment    Boolean  @default(false)
-  startDate    DateTime
-  endDate      DateTime
-  roomAvailble availble
-  userId       Int
-  totalPrice   Int
-  customer     User     @relation(fields: [userId], references: [id])
-  roomsId      Int
-  room         Room     @relation(fields: [roomsId], references: [id])
+  id            Int      @id @default(autoincrement())
+  extraBed      Int?     @default(0)
+  createdAt     DateTime @default(now())
+  isPayment     payment  @default(PENDING)
+  startDate     DateTime @db.Date
+  endDate       DateTime @db.Date
+  roomAvailable availble @default(OCCUPIED)
+  userId        Int
+  totalPrice    String
+  usersId       User     @relation(fields: [userId], references: [id])
+  roomId        Int
+  roomsId       Room     @relation(fields: [roomId], references: [id])
 }

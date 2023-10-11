@@ -14,7 +14,7 @@ RESPONSE
 400 { message: String }
 500 { message: String }
 
-GET AUTHENTICATED USER
+GET AUTHENTICATED 
 GET /auth/me
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 RESPONSE
@@ -23,71 +23,192 @@ RESPONSE
 500 { message: String }
 
 
+ADMIN
+
+ROOM
+
+GET ALL ROOM
+GET /admin/room
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { user: { id: Number, firstName: String, ... } }
+401 { message: String }
+500 { message: String }
+
+ADD ROOM
+POST /admin/room
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY roomNumber, roomTypeId, isMaintenance
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+ADD ROOM Type
+POST /admin/room/roomType
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY price, guestLimit, roomType
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+UPDATE ROOM
+PATCH /admin/room/:roomId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY roomNumber?, roomTypeId?, isMaintenance?
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+UPDATE ROOM Type
+PATCH /admin/room/:roomTypeId/roomType
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY price?, guestLimit?, roomType?
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+DELETE ROOM
+DELETE /admin/room/:roomId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+DELETE ROOM Type
+DELETE /admin/room/:roomTypeId/roomType
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+BOOKING
+
+GET ALL BOOKING
+GET /admin/booking
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { user: { id: Number, firstName: String, ... } }
+401 { message: String }
+500 { message: String }
+
+CREATE BOOKING
+POST /admin/booking/:userId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY extraBed?, totalPrice, startDate, endDate, roomId,isPayment?
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+UPDATE USER
+PATCH /admin/booking/:userId/:roomId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY extraBed?, totalPrice?, startDate?, endDate?, roomId
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+DELETE USER
+DELETE /admin/booking/:userId/:roomId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+APPROVE PAYMENT
+PATCH /admin/payment/:userId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+REJECT PAYMENT
+DELETE /admin/payment/:userId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+MANAGEMENT USER
+
+GET ALL USER
+GET /admin/user
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { user: { id: Number, firstName: String, ... } }
+401 { message: String }
+500 { message: String }
+
+UPDATE USER
+PATCH /admin/user/:userId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY 
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+DELETE USER
+DELETE /admin/user/:userId
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+201 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
 
 
 
 
 
 
+
+
+USER
 
 GET USER PROFILE BY id
 GET /user/:userId
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 RESPONSE
 200 { 
-  user: { id: Number, firstName: String, ... }, 
-  status: String, 
-  friends: [ {id: Number, firstName: String, ...} ] 
+  user:
+  room TYPE:
 }
 401 { message: String }
 500 { message: String }
 
-REQUEST FRIEND
-POST /friend/:receiverId
+GET ALL ROOM CAN BOOKING
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 RESPONSE
-200 { message: String }
-400 { message: String }
+200 { 
+  room:
+}
 401 { message: String }
 500 { message: String }
 
-REJECT REQUEST
-DELETE /friend/:requesterId/reject
-HEADER AUTHORIZATION Bearer ACCESS_TOKEN
-RESPONSE
-200 { message: String }
-400 { message: String }
-401 { message: String }
-500 { message: String }
-
-CANCEL REQUEST
-DELETE /friend/:receiverId/cancel
-HEADER AUTHORIZATION Bearer ACCESS_TOKEN
-RESPONSE
-200 { message: String }
-400 { message: String }
-401 { message: String }
-500 { message: String }
-
-UNFRIEND
-DELETE /friend/:friendId/unfriend
-HEADER AUTHORIZATION Bearer ACCESS_TOKEN
-RESPONSE
-200 { message: String }
-400 { message: String }
-401 { message: String }
-500 { message: String }
-
-ACCEPT FRIEND
-PATCH /friend/:requesterId
-HEADER AUTHORIZATION Bearer ACCESS_TOKEN
-RESPONSE
-200 { message: String }
-400 { message: String }
-401 { message: String }
-500 { message: String }
-
-CREATE POST
+CREATE BOOKING
 POST /post
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 BODY message?, image?
@@ -97,7 +218,30 @@ RESPONSE
 401 { message: String }
 500 { message: String }
 
-GET ALL POST INCLUDE POST FRIEND
+CANCEL BOOKING
+DELETE /friend/:receiverId/cancel
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OPTIONAL
+GET ALL BOOKING
 GET /post/friend
 HEADER AUTHORIZATION Bearer ACCESS_TOKEN
 RESPONSE 
@@ -105,15 +249,6 @@ RESPONSE
   posts: [{id: Number, message: String, image: string, ...}],
   user: { id: Number, firstName: String, ... }, 
   }
-400 { message: String }
-401 { message: String }
-500 { message: String }
-
-TOGGLE LIKE
-POST /post/:postId/like
-HEADER AUTHORIZATION Bearer ACCESS_TOKEN
-RESPONSE
-201 { message: String }
 400 { message: String }
 401 { message: String }
 500 { message: String }
