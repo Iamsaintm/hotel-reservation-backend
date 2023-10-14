@@ -37,16 +37,12 @@ exports.createBooking = async (req, res, next) => {
             },
           },
         },
+        isMaintenance: false,
       },
     });
 
-    const roomIdToCheck = data.roomId;
-    const isMaintenance = availableRooms.some(
-      (room) => room.id === roomIdToCheck && room.isMaintenance
-    );
-
-    if (isMaintenance) {
-      return next(createError("Room is under maintenance", 400));
+    if (availableRooms) {
+      return next(createError("Selected room does not exist", 400));
     }
 
     const roomNumber = await prisma.room.findUnique({

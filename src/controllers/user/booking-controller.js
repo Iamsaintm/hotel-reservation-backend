@@ -29,6 +29,24 @@ exports.createBooking = async (req, res, next) => {
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
 
+    const availableRooms = await prisma.room.findMany({
+      where: {
+        NOT: {
+          bookings: {
+            some: {
+              startDate: { lte: endDate },
+              endDate: { gte: startDate },
+            },
+          },
+        },
+        isMaintenance: false,
+      },
+    });
+
+    if (availableRooms) {
+      return next(createError("Selected room does not exist", 400));
+    }
+
     const roomNumber = await prisma.room.findFirst({
       where: { id: +data.roomId },
     });

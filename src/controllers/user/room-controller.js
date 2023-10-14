@@ -3,9 +3,9 @@ const createError = require("../../utils/create-error");
 
 exports.getRoom = async (req, res, next) => {
   try {
-    const data = req.body;
-    if (!data) {
-      return next(createError("Room is required", 400));
+    const data = req.query;
+    if (!data.startDate || !data.endDate || !data.guestLimit) {
+      return next(createError("All search parameters are required", 400));
     }
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
@@ -13,10 +13,15 @@ exports.getRoom = async (req, res, next) => {
     const availableRooms = await prisma.room.findMany({
       where: {
         NOT: {
-          bookings: {
-            some: {
-              startDate: { lte: endDate },
-              endDate: { gte: startDate },
+          AND: {
+            bookings: {
+              some: {
+                startDate: { lte: endDate },
+                endDate: { gte: startDate },
+              },
+            },
+            roomType: {
+              guestLimit: { gte: data.guestLimit },
             },
           },
         },
@@ -24,12 +29,11 @@ exports.getRoom = async (req, res, next) => {
       },
     });
 
-    const roomType = await prisma.roomType.findFirst({
+    const roomType = await prisma.roomType.findMany({
       where: { id: availableRooms.roomTypeId },
     });
 
     const room = [availableRooms, roomType];
-    console.log(room);
     res.status(200).json(room);
   } catch (err) {
     next(err);
