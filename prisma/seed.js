@@ -9,7 +9,7 @@ const user = [
     password: hashPassword,
     firstName: "Saint",
     lastName: "Nevers",
-    status: "ADMIN",
+    role: "ADMIN",
     phoneNumber: "8726776628",
   },
   {
@@ -17,7 +17,7 @@ const user = [
     password: hashPassword,
     firstName: "Bud",
     lastName: "Sagger",
-    status: "USER",
+    role: "USER",
     phoneNumber: "5964533068",
   },
   {
@@ -25,7 +25,7 @@ const user = [
     password: hashPassword,
     firstName: "Tricia",
     lastName: "Dutch",
-    status: "USER",
+    role: "USER",
     phoneNumber: "6928486437",
   },
   {
@@ -33,7 +33,7 @@ const user = [
     password: hashPassword,
     firstName: "Elias",
     lastName: "Pfiffer",
-    status: "USER",
+    role: "USER",
     phoneNumber: "4011721411",
   },
   {
@@ -41,18 +41,54 @@ const user = [
     password: hashPassword,
     firstName: "Sherman",
     lastName: "Peplow",
-    status: "USER",
+    role: "USER",
     phoneNumber: "4011721455",
   },
 ];
 
 const roomType = [
-  { roomType: "Standard room", guestLimit: "4", roomPrice: "3000" },
-  { roomType: "Superior room", guestLimit: "4", roomPrice: "4500" },
-  { roomType: "Executive room", guestLimit: "4", roomPrice: "5500" },
-  { roomType: "Honeymoon suite", guestLimit: "2", roomPrice: "6000" },
-  { roomType: "Jacuzzi suite", guestLimit: "2", roomPrice: "6500" },
-  { roomType: "Family room", guestLimit: "6", roomPrice: "6000" },
+  {
+    roomType: "Standard room",
+    guestLimit: "2",
+    roomPrice: "3000",
+    roomImage:
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/fruclmnpbeadfh8taywr",
+  },
+  {
+    roomType: "Superior room",
+    guestLimit: "4",
+    roomPrice: "4500",
+    roomImage:
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/ypzovmlxuzlbuz6mdpj6",
+  },
+  {
+    roomType: "Executive room",
+    guestLimit: "4",
+    roomPrice: "5500",
+    roomImage:
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/bnoyuzclv1s9iawtmkcb",
+  },
+  {
+    roomType: "Honeymoon suite",
+    guestLimit: "2",
+    roomPrice: "6000",
+    roomImage:
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/kdcfqitwkhbnfpdlrxvx",
+  },
+  {
+    roomType: "Jacuzzi suite",
+    guestLimit: "2",
+    roomPrice: "6500",
+    roomImage:
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/yabdbkhotthrl3b8wkyw",
+  },
+  {
+    roomType: "Family room",
+    guestLimit: "6",
+    roomPrice: "6000",
+    roomImage:
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/zlks0mydtqlzx18rtutp",
+  },
 ];
 
 const room = [
@@ -77,7 +113,6 @@ const booking = [
   {
     userId: 2,
     roomId: 3,
-    extraBed: 0,
     startDate: "2023-10-12T00:00:00Z",
     endDate: "2023-10-13T00:00:00Z",
     totalPrice: 6000,
@@ -85,7 +120,6 @@ const booking = [
   {
     userId: 3,
     roomId: 8,
-    extraBed: 0,
     startDate: "2023-10-01T00:00:00Z",
     endDate: "2023-10-02T00:00:00Z",
     totalPrice: 11000,
@@ -93,7 +127,6 @@ const booking = [
   {
     userId: 4,
     roomId: 14,
-    extraBed: 0,
     startDate: "2023-10-12T00:00:00Z",
     endDate: "2023-10-13T00:00:00Z",
     totalPrice: 13000,

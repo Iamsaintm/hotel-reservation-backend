@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
     const user = await prisma.user.findUnique({
       where: {
         id: payload.userId,
-        status: "ADMIN",
+        role: "ADMIN",
       },
     });
     if (!user) {

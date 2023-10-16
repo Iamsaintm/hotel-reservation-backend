@@ -1,5 +1,7 @@
 const prisma = require("../../models/prisma");
 const createError = require("../../utils/create-error");
+const { upload } = require("../../utils/cloudinary-service");
+const fs = require("fs/promises");
 
 exports.getRoom = async (req, res, next) => {
   try {
@@ -59,6 +61,10 @@ exports.addRoomType = async (req, res, next) => {
       return next(createError("Room is required", 400));
     }
 
+    if (req.file) {
+      data.roomImage = await upload(req.file.path);
+    }
+
     const existingRoomType = await prisma.roomType.findFirst({
       where: { roomType: data.roomType },
     });
@@ -76,6 +82,10 @@ exports.addRoomType = async (req, res, next) => {
     res.status(201).json({ message: "create success", roomType });
   } catch (err) {
     next(err);
+  } finally {
+    if (req.file) {
+      fs.unlink(req.file.path);
+    }
   }
 };
 

@@ -20,14 +20,18 @@ exports.getRoom = async (req, res, next) => {
                 endDate: { gte: startDate },
               },
             },
-            roomType: {
-              guestLimit: { gte: data.guestLimit },
-            },
           },
+        },
+        roomType: {
+          guestLimit: { gte: data.guestLimit },
         },
         isMaintenance: false,
       },
     });
+
+    if (availableRooms.length === 0 && !availableRooms) {
+      return next(createError(`No room for ${data.guestLimit} people`, 400));
+    }
 
     const roomType = await prisma.roomType.findMany({
       where: { id: availableRooms.roomTypeId },

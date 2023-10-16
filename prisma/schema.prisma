@@ -29,7 +29,7 @@ model User {
   email       String    @unique
   firstName   String
   lastName    String
-  status      role      @default(USER)
+  role        role      @default(USER)
   phoneNumber String    @unique
   bookings    Booking[]
 }
@@ -38,6 +38,7 @@ model RoomType {
   id         Int    @id @default(autoincrement())
   roomType   String
   guestLimit String
+  roomImage  String
   roomPrice  String
   rooms      Room[]
 }
@@ -53,7 +54,6 @@ model Room {
 
 model Booking {
   id            Int      @id @default(autoincrement())
-  extraBed      Int?     @default(0)
   createdAt     DateTime @default(now())
   isPayment     payment  @default(PENDING)
   startDate     DateTime @db.Date

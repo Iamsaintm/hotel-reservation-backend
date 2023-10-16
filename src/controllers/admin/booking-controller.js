@@ -20,6 +20,7 @@ exports.createBooking = async (req, res, next) => {
     const userId = +req.params.userId;
 
     const data = req.body;
+
     if (!data) {
       return next(createError("Room is required", 400));
     }
@@ -27,7 +28,7 @@ exports.createBooking = async (req, res, next) => {
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
 
-    const availableRooms = await prisma.room.findMany({
+    const availableRooms = await prisma.room.findFirst({
       where: {
         NOT: {
           bookings: {
@@ -37,6 +38,7 @@ exports.createBooking = async (req, res, next) => {
             },
           },
         },
+        roomId: +data.roomId,
         isMaintenance: false,
       },
     });
@@ -45,28 +47,18 @@ exports.createBooking = async (req, res, next) => {
       return next(createError("Selected room does not exist", 400));
     }
 
-    const roomNumber = await prisma.room.findUnique({
-      where: { id: +roomIdToCheck },
-    });
-
-    if (!roomNumber) {
-      return next(createError("Selected room does not exist", 400));
-    }
-
     const timeDifference = endDate - startDate;
 
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-    const totalPrice =
-      daysDifference * ((data.extraBed = 0) * 500 + roomType.roomPrice);
+    const totalPrice = daysDifference * roomType.roomPrice;
 
     const room = await prisma.booking.create({
       data: {
         roomsId: {
           connect: {
-            id: +roomNumber.id,
+            id: +availableRooms.id,
           },
         },
-        extraBed: (data.extraBed = 0),
         startDate: data.startDate,
         endDate: data.endDate,
         totalPrice: totalPrice,

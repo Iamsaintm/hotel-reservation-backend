@@ -29,24 +29,6 @@ exports.createBooking = async (req, res, next) => {
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
 
-    const availableRooms = await prisma.room.findMany({
-      where: {
-        NOT: {
-          bookings: {
-            some: {
-              startDate: { lte: endDate },
-              endDate: { gte: startDate },
-            },
-          },
-        },
-        isMaintenance: false,
-      },
-    });
-
-    if (availableRooms) {
-      return next(createError("Selected room does not exist", 400));
-    }
-
     const roomNumber = await prisma.room.findFirst({
       where: { id: +data.roomId },
     });
@@ -58,8 +40,7 @@ exports.createBooking = async (req, res, next) => {
     const timeDifference = endDate - startDate;
 
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-    const totalPrice =
-      daysDifference * ((data.extraBed = 0) * 500 + roomType.roomPrice);
+    const totalPrice = daysDifference * roomType.roomPrice;
 
     const room = await prisma.booking.create({
       data: {
@@ -68,9 +49,8 @@ exports.createBooking = async (req, res, next) => {
             id: +roomNumber.id,
           },
         },
-        extraBed: (data.extraBed = 0),
-        startDate: data.startDate,
-        endDate: data.endDate,
+        startDate: startDate,
+        endDate: endDate,
         totalPrice: totalPrice,
         usersId: {
           connect: {
@@ -122,7 +102,7 @@ exports.deleteBooking = async (req, res, next) => {
     const bookingId = +req.params.bookingId;
 
     const existBooking = await prisma.booking.findFirst({
-      where: { id: bookingId, userId },
+      where: { id: bookingId, userId: userId },
     });
 
     if (!existBooking) {
@@ -133,7 +113,11 @@ exports.deleteBooking = async (req, res, next) => {
       where: { id: bookingId },
     });
 
-    res.status(200).json({ message: "delete success" });
+    const newBooking = await prisma.booking.findMany({
+      where: { userId: userId },
+    });
+
+    res.status(200).json({ message: "delete success", newBooking });
   } catch (err) {
     next(err);
   }
