@@ -13,25 +13,25 @@ router.post(
 );
 
 router.patch(
-  "/:userId/:roomId",
+  "/:bookingId",
   authenticateMiddleware,
   bookingController.updateBooking
 );
 
 router.delete(
-  "/:userId/:roomId",
+  "/:bookingId",
   authenticateMiddleware,
   bookingController.deleteBooking
 );
 
 router.patch(
-  "/payment/:userId/:roomId",
+  "/payment/:bookingId",
   authenticateMiddleware,
   bookingController.acceptRequest
 );
 
 router.patch(
-  "/payment/:userId/:roomId/reject",
+  "/payment/:bookingId/reject",
   authenticateMiddleware,
   bookingController.rejectRequest
 );

@@ -80,16 +80,11 @@ exports.createBooking = async (req, res, next) => {
 exports.updateBooking = async (req, res, next) => {
   try {
     const data = req.body;
-    const userId = +req.params.userId;
-    const roomId = +req.params.roomId;
-
-    const existBooking = await prisma.booking.findFirst({
-      where: { roomId: roomId, userId: userId },
-    });
+    const bookingId = +req.params.bookingId;
 
     await prisma.booking.update({
       data: data,
-      where: { id: existBooking.id },
+      where: { id: bookingId },
     });
 
     res.status(200).json({ message: "update success" });
@@ -100,15 +95,10 @@ exports.updateBooking = async (req, res, next) => {
 
 exports.deleteBooking = async (req, res, next) => {
   try {
-    const userId = +req.params.userId;
-    const roomId = +req.params.roomId;
-
-    const existBooking = await prisma.booking.findFirst({
-      where: { roomId: roomId, userId: userId },
-    });
-
+    const bookingId = +req.params.bookingId;
+    console.log(bookingId);
     await prisma.booking.delete({
-      where: { id: existBooking.id },
+      where: { id: bookingId },
     });
 
     res.status(200).json({ message: "delete success" });
@@ -119,22 +109,14 @@ exports.deleteBooking = async (req, res, next) => {
 
 exports.acceptRequest = async (req, res, next) => {
   try {
-    const userId = +req.params.userId;
-    const roomId = +req.params.roomId;
-    const existBooking = await prisma.booking.findFirst({
-      where: { roomId: roomId, userId: userId, isPayment: "PENDING" },
-    });
-
-    if (!existBooking) {
-      return next(createError("Booking does not exist", 400));
-    }
+    const bookingId = +req.params.bookingId;
 
     await prisma.booking.update({
       data: {
         isPayment: "ACCEPT",
       },
       where: {
-        id: existBooking.id,
+        id: bookingId,
       },
     });
 
@@ -146,22 +128,14 @@ exports.acceptRequest = async (req, res, next) => {
 
 exports.rejectRequest = async (req, res, next) => {
   try {
-    const userId = +req.params.userId;
-    const roomId = +req.params.roomId;
-    const existBooking = await prisma.booking.findFirst({
-      where: { roomId: roomId, userId: userId, isPayment: "PENDING" },
-    });
-
-    if (!existBooking) {
-      return next(createError("Booking does not exist", 400));
-    }
+    const bookingId = +req.params.bookingId;
 
     await prisma.booking.update({
       data: {
         isPayment: "REJECT",
       },
       where: {
-        id: existBooking.id,
+        id: bookingId,
       },
     });
 

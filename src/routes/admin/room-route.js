@@ -6,6 +6,7 @@ const roomController = require("../../controllers/admin/room-controller");
 const uploadMiddleware = require("../../middlewares/upload");
 
 router.get("/", authenticateMiddleware, roomController.getRoom);
+router.get("/roomType", authenticateMiddleware, roomController.getRoomType);
 router.post("/", authenticateMiddleware, roomController.addRoom);
 router.post(
   "/roomType",

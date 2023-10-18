@@ -10,7 +10,21 @@ exports.getRoom = async (req, res, next) => {
     if (!room && room.length === 0) {
       return next(createError("Room does not exist", 404));
     }
+
     res.status(200).json(room);
+  } catch (err) {
+    next(err);
+  }
+};
+exports.getRoomType = async (req, res, next) => {
+  try {
+    const roomType = await prisma.roomType.findMany();
+
+    if (!roomType && roomType.length === 0) {
+      return next(createError("RoomTypes does not exist", 404));
+    }
+
+    res.status(200).json(roomType);
   } catch (err) {
     next(err);
   }
@@ -137,12 +151,8 @@ exports.deleteRoom = async (req, res, next) => {
   try {
     const roomId = +req.params.roomId;
 
-    const existRoom = await prisma.room.findFirst({
-      where: { roomId },
-    });
-
     await prisma.room.delete({
-      where: { id: existRoom.id },
+      where: { id: roomId },
     });
 
     res.status(200).json({ message: "delete success" });
