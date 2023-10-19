@@ -17,6 +17,10 @@ exports.getRoom = async (req, res, next) => {
       );
     }
 
+    if (startDate !== endDate) {
+      return next(createError("Start date cannot be same end date", 400));
+    }
+
     const availableRooms = await prisma.room.findMany({
       where: {
         roomType: {
