@@ -7,6 +7,7 @@ exports.getRoom = async (req, res, next) => {
     if (!data.startDate || !data.endDate || !data.guestLimit) {
       return next(createError("All search parameters are required", 400));
     }
+
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
 
@@ -23,18 +24,42 @@ exports.getRoom = async (req, res, next) => {
         },
         isMaintenance: false,
       },
+      include: {
+        bookings: {
+          where: {
+            OR: [
+              {
+                startDate: {
+                  lte: endDate,
+                },
+                endDate: {
+                  gte: startDate,
+                },
+              },
+              {
+                startDate: {
+                  gte: startDate,
+                  lte: endDate,
+                },
+              },
+            ],
+          },
+        },
+        roomType: true,
+      },
     });
 
-    if (availableRooms.length === 0 && !availableRooms) {
-      return next(createError(`No room for ${data.guestLimit} people`, 400));
+    const roomsWithoutOverlappingBookings = availableRooms.filter(
+      (room) => room.bookings.length === 0
+    );
+
+    if (roomsWithoutOverlappingBookings.length === 0) {
+      return next(
+        createError(`No available rooms for the specified date range`, 400)
+      );
     }
 
-    const roomType = await prisma.roomType.findMany({
-      where: { id: availableRooms.roomTypeId },
-    });
-
-    const room = [availableRooms, roomType];
-    res.status(200).json(room);
+    res.status(200).json((room = roomsWithoutOverlappingBookings));
   } catch (err) {
     next(err);
   }
