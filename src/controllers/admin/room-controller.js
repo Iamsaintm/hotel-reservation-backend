@@ -58,7 +58,11 @@ exports.addRoom = async (req, res, next) => {
     }
 
     const room = await prisma.room.create({
-      data: data,
+      data: {
+        roomNumber: data.roomNumber,
+        isMaintenance: data.isMaintenance,
+        roomTypeId: data.roomTypeId,
+      },
     });
 
     res.status(201).json({ message: "create success", room });
@@ -107,13 +111,17 @@ exports.updateRoom = async (req, res, next) => {
   try {
     const data = req.body;
     const roomId = +req.params.roomId;
-    console.log(roomId);
+
     const existRoom = await prisma.room.findFirst({
       where: { id: roomId },
     });
 
     await prisma.room.update({
-      data: data,
+      data: {
+        roomNumber: data.roomNumber,
+        isMaintenance: data.isMaintenance,
+        roomTypeId: data.roomTypeId,
+      },
       where: { id: existRoom.id },
     });
 
@@ -127,6 +135,10 @@ exports.updateRoomType = async (req, res, next) => {
   try {
     const data = req.body;
     const roomTypeId = +req.params.roomTypeId;
+    console.log(data);
+    if (req.file) {
+      data.roomImage = await upload(req.file.path);
+    }
 
     if (!data) {
       return next(createError("Room is required", 400));
@@ -136,12 +148,17 @@ exports.updateRoomType = async (req, res, next) => {
       where: { id: roomTypeId },
     });
 
-    await prisma.roomType.update({
-      data: data,
+    const roomType = await prisma.roomType.update({
+      data: {
+        roomType: data.roomType,
+        guestLimit: data.guestLimit,
+        roomImage: data.roomImage,
+        roomPrice: data.roomPrice,
+      },
       where: { id: existRoomType.id },
     });
 
-    res.status(200).json({ message: "update success" });
+    res.status(200).json({ message: "update success", roomType });
   } catch (err) {
     next(err);
   }

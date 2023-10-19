@@ -18,6 +18,7 @@ router.patch("/:roomId", authenticateMiddleware, roomController.updateRoom);
 router.patch(
   "/:roomTypeId/roomType",
   authenticateMiddleware,
+  uploadMiddleware.single("roomImage"),
   roomController.updateRoomType
 );
 router.delete("/:roomId", authenticateMiddleware, roomController.deleteRoom);
