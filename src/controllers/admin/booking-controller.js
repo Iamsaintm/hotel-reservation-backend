@@ -5,7 +5,16 @@ exports.getBooking = async (req, res, next) => {
   try {
     const booking = await prisma.booking.findMany({
       include: {
-        usersId: true,
+        usersId: {
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+            phoneNumber: true,
+          },
+        },
         roomsId: {
           include: {
             roomType: true,
