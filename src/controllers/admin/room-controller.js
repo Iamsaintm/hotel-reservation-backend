@@ -5,8 +5,11 @@ const fs = require("fs/promises");
 
 exports.getRoom = async (req, res, next) => {
   try {
-    const room = await prisma.room.findMany();
-
+    const room = await prisma.room.findMany({
+      include: {
+        roomType: true,
+      },
+    });
     if (!room && room.length === 0) {
       return next(createError("Room does not exist", 404));
     }
@@ -135,7 +138,6 @@ exports.updateRoomType = async (req, res, next) => {
   try {
     const data = req.body;
     const roomTypeId = +req.params.roomTypeId;
-    console.log(data);
     if (req.file) {
       data.roomImage = await upload(req.file.path);
     }

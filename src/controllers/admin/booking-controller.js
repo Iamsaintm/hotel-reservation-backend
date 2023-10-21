@@ -3,8 +3,16 @@ const createError = require("../../utils/create-error");
 
 exports.getBooking = async (req, res, next) => {
   try {
-    const booking = await prisma.booking.findMany();
-
+    const booking = await prisma.booking.findMany({
+      include: {
+        usersId: true,
+        roomsId: {
+          include: {
+            roomType: true,
+          },
+        },
+      },
+    });
     if (!booking || booking.length === 0) {
       return next(createError("Booking not found", 404));
     }

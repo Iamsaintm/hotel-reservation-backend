@@ -10,15 +10,10 @@ exports.getRoom = async (req, res, next) => {
 
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
-
-    if (startDate > endDate) {
+    if (startDate >= endDate) {
       return next(
         createError("Start date cannot be greater than end date", 400)
       );
-    }
-
-    if (startDate !== endDate) {
-      return next(createError("Start date cannot be same end date", 400));
     }
 
     const availableRooms = await prisma.room.findMany({
