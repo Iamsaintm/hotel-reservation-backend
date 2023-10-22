@@ -16,7 +16,7 @@ exports.getRoom = async (req, res, next) => {
       );
     }
 
-    const availableRooms = await prisma.room.findMany({
+    const rooms = await prisma.room.findMany({
       where: {
         roomType: {
           guestLimit: { gte: data.guestLimit },
@@ -26,20 +26,13 @@ exports.getRoom = async (req, res, next) => {
       include: {
         bookings: {
           where: {
-            OR: [
+            AND: [
               {
-                startDate: {
-                  lte: endDate,
-                },
-                endDate: {
-                  gte: startDate,
-                },
+                startDate: { lte: endDate },
+                endDate: { gte: startDate },
               },
               {
-                startDate: {
-                  gte: startDate,
-                  lte: endDate,
-                },
+                isPayment: { in: ["ACCEPT", "REJECT"] },
               },
             ],
           },
@@ -48,17 +41,26 @@ exports.getRoom = async (req, res, next) => {
       },
     });
 
-    const roomsWithoutOverlappingBookings = availableRooms.filter(
-      (room) => room.bookings.length === 0
-    );
+    const availableRooms = rooms.filter((room) => {
+      const booking = room.bookings.some((booking) => {
+        const bookingStartDate = new Date(booking.startDate);
+        const bookingEndDate = new Date(booking.endDate);
 
-    if (roomsWithoutOverlappingBookings.length === 0) {
-      return next(
-        createError(`No available rooms for the specified date range`, 400)
-      );
+        return (
+          bookingStartDate <= endDate &&
+          bookingEndDate >= startDate &&
+          booking.isPayment === "REJECT"
+        );
+      });
+
+      return !booking;
+    });
+
+    if (availableRooms.length === 0) {
+      return next(createError("No room available", 400));
     }
 
-    res.status(200).json((room = roomsWithoutOverlappingBookings));
+    res.status(200).json((room = availableRooms));
   } catch (err) {
     next(err);
   }

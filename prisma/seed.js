@@ -52,42 +52,42 @@ const roomType = [
     guestLimit: "2",
     roomPrice: "3000",
     roomImage:
-      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/fruclmnpbeadfh8taywr",
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/zesafbgxrwpemxmo0mfr",
   },
   {
     roomType: "Superior room",
     guestLimit: "4",
     roomPrice: "4500",
     roomImage:
-      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/ypzovmlxuzlbuz6mdpj6",
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/tcxtaxwnyurbae2vb2gx",
   },
   {
     roomType: "Executive room",
     guestLimit: "4",
     roomPrice: "5500",
     roomImage:
-      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/bnoyuzclv1s9iawtmkcb",
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/fuichmznnwrog4phaksw",
   },
   {
     roomType: "Honeymoon suite",
     guestLimit: "2",
     roomPrice: "6000",
     roomImage:
-      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/kdcfqitwkhbnfpdlrxvx",
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/x9ezu0yanqxfix9b89wz",
   },
   {
     roomType: "Jacuzzi suite",
     guestLimit: "2",
     roomPrice: "6500",
     roomImage:
-      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/yabdbkhotthrl3b8wkyw",
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/pkmnoq4tc8aal26e5h7r",
   },
   {
     roomType: "Family room",
     guestLimit: "6",
     roomPrice: "6000",
     roomImage:
-      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/zlks0mydtqlzx18rtutp",
+      "https://res.cloudinary.com/dyaznauq8/image/upload/f_auto,q_auto/rreefzyj4enls7gigumf",
   },
 ];
 
