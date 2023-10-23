@@ -41,33 +41,21 @@ exports.getRoom = async (req, res, next) => {
                   {
                     startDate: {
                       lte: startDate,
-                      gte: startDate,
+                      gte: endDate,
                     },
                   },
                   {
                     endDate: {
                       lte: startDate,
-                      gte: startDate,
-                    },
-                  },
-                  {
-                    startDate: {
-                      lte: startDate,
-                      gte: startDate,
-                    },
-                    endDate: {
-                      lte: startDate,
-                      gte: startDate,
+                      gte: endDate,
                     },
                   },
                   {
                     startDate: {
-                      gte: startDate,
                       lte: startDate,
                     },
                     endDate: {
-                      gte: startDate,
-                      lte: startDate,
+                      gte: endDate,
                     },
                   },
                 ],
@@ -88,12 +76,9 @@ exports.getRoom = async (req, res, next) => {
     });
 
     const roomNotVacantIds = roomNotVacant.map((room) => room.id);
-
     const filteredRooms = rooms.filter(
       (room) => !roomNotVacantIds.includes(room.id)
     );
-
-    console.log(filteredRooms);
 
     res.status(200).json(filteredRooms);
   } catch (err) {
