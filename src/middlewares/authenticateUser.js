@@ -14,14 +14,14 @@ module.exports = async (req, res, next) => {
     const user = await prisma.user.findUnique({
       where: {
         id: payload.userId,
-        role: "ADMIN",
+        role: "USER",
       },
     });
     if (!user) {
       return next(createError("unauthenticated", 401));
     }
 
-    if (!user.role === "ADMIN") {
+    if (!user.role === "USER") {
       return next(createError("unauthenticated", 401));
     }
     delete user.password;
