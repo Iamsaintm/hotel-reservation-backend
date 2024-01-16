@@ -8,12 +8,6 @@ router.get("/", authenticateMiddleware, userController.getBooking);
 
 router.post("/", authenticateMiddleware, userController.createBooking);
 
-router.patch(
-  "/:bookingId",
-  authenticateMiddleware,
-  userController.updateBooking
-);
-
 router.delete(
   "/:bookingId",
   authenticateMiddleware,

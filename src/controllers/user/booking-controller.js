@@ -75,35 +75,6 @@ exports.createBooking = async (req, res, next) => {
   }
 };
 
-exports.updateBooking = async (req, res, next) => {
-  try {
-    const data = req.body;
-    const userId = +req.user.id;
-    const bookingId = +req.params.bookingId;
-
-    if (!data) {
-      return next(createError("Room is required", 400));
-    }
-
-    const existBooking = await prisma.booking.findFirst({
-      where: { id: bookingId, userId },
-    });
-
-    if (!existBooking) {
-      return next(createError("Booking does not exist", 400));
-    }
-
-    await prisma.booking.update({
-      data: data,
-      where: { id: bookingId },
-    });
-
-    res.status(200).json({ message: "update success" });
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.deleteBooking = async (req, res, next) => {
   try {
     const userId = +req.user.id;
